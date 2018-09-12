@@ -1,5 +1,8 @@
 package ru.mail.maks825.tests;
 
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Step;
 import org.junit.*;
 import org.junit.runners.MethodSorters;
 import org.openqa.selenium.WebDriver;
@@ -13,7 +16,8 @@ import utils.ConfigProperties;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-
+@Epic("Smartphone")
+@Feature("Samsung")
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SmartphoneTest {
 
@@ -35,12 +39,14 @@ public class SmartphoneTest {
     }
 
     @Test
+    @Step("Открытие страницы Яндекс")
     public void step1_openYandexWebPage() {
         driver.get(ConfigProperties.getProperty("mainURL"));
         Assert.assertEquals("https://www.yandex.ru/", driver.getCurrentUrl());
     }
 
     @Test
+    @Step("Переход на страницу Яндекс Маркет")
     public void step2_goToMarketPage() {
         mainPage.goToMarket();
         Assert.assertEquals("Маркет", marketPage.marketTitle.getAttribute("textContent"));
@@ -48,6 +54,7 @@ public class SmartphoneTest {
     }
 
     @Test
+    @Step("Переход в раздел Электроника/Мобильные телефоны")
     public void step3_goToElectronics() {
         marketPage.goToSubSectionElectronics();
         Assert.assertEquals("Электроника", marketPage.pageTitle.getAttribute("textContent"));
@@ -57,6 +64,7 @@ public class SmartphoneTest {
     }
 
     @Test
+    @Step("Выбор фильтра Samsung")
     public void step4_chooseFilterSamsung() {
         marketPage.filterBySamsung();
         marketPage.waitForLoadItems();
@@ -69,6 +77,7 @@ public class SmartphoneTest {
     }
 
     @Test
+    @Step("Фильтр по цене")
     public void step5_filterByPrice() {
         marketPage.inputPriceFrom(40000);
         marketPage.waitForLoadItems();
@@ -77,7 +86,7 @@ public class SmartphoneTest {
         try {
             for (WebElement price : prices) {
                 int formattedPrice = Integer.parseInt(price.getAttribute("textContent")
-                                                        .replaceAll("[^0-9]", ""));
+                        .replaceAll("[^0-9]", ""));
                 Assert.assertTrue(formattedPrice >= 40000);
             }
         } catch (NumberFormatException nfe) {
@@ -89,6 +98,7 @@ public class SmartphoneTest {
     }
 
     @Test
+    @Step("Открытие страницы первого в списке смартфона")
     public void step6_goToFirstPhone() {
         marketPage.goToItem(0);
         Assert.assertEquals(titleOfFirstPhone, itemPage.getItemTitle());
